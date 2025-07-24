@@ -31,7 +31,8 @@ class MainActivity : ComponentActivity() {
 
          val people = listOf(
              Person(firstName = "Bryce", lastName = "Harper", age = 32, position = "1B"),
-             Person(firstName = "Aaron", lastName = "Nola", age = 34, position = "SP")
+             Person(firstName = "Aaron", lastName = "Nola", age = 34, position = "SP"),
+             Person(firstName = "Christopher", lastName = "Sanchez", age = 27, position = "SP")
          )
 
         setContent {
