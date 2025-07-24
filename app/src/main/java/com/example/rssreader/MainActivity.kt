@@ -21,6 +21,8 @@ import com.example.rssreader.ui.theme.RSSReaderTheme
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.layout.HorizontalAlignmentLine
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
@@ -34,7 +36,13 @@ class MainActivity : ComponentActivity() {
              Person(firstName = "Aaron", lastName = "Nola", age = 34, position = "SP"),
              Person(firstName = "Christopher", lastName = "Sanchez", age = 27, position = "SP")
          )
-
+         val rotation = people.filter {it.position.equals("SP")}
+         val rssItems: List<RSSItem> = listOf(
+             RSSItem(title = "Welcome to my blog", text = "This is the first blog", type="text"),
+             RSSItem(title = "Blog item", text = "Blog 2 text", type="text"),
+            RSSItem(title = "Blogger", text = "Text of Blog 3", type="video"),
+            RSSItem(title = "Returning Blog", text = "Back from break", type="text")
+         )
         setContent {
             RSSReaderTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding: PaddingValues ->
@@ -46,6 +54,12 @@ class MainActivity : ComponentActivity() {
                         items(people) {
                             ListItem(it)
                         }
+                        items(rssItems) {
+                            if (it.type == "text") {
+                                ListRSSText(it)
+                            }
+                        }
+
                     }
                 }
             }
@@ -70,6 +84,27 @@ fun GreetingPreview() {
 }
 
 @Composable
+fun ListRSSText(item: RSSItem) {
+    Card(modifier = Modifier
+        .fillMaxSize()
+        .padding(12.dp)
+    ) {
+        Row {
+            Image(
+                painter = painterResource(R.drawable.baseline_text_snippet_24),
+                contentDescription = "Text snippet photo",
+                modifier = Modifier.width(100.dp).height(100.dp)
+            )
+            Text(
+                text = item.title,
+                modifier = Modifier.padding(20.dp)
+            )
+        }
+        Text(text = item.text)
+    }
+}
+
+@Composable
 fun ListItem(player: Person) {
     Card(modifier = Modifier
         .fillMaxSize()
@@ -84,21 +119,18 @@ fun ListItem(player: Person) {
             Column {
                 Text(
                     text = player.firstName,
-                    modifier = Modifier.padding(0.dp)
                 )
                 Text(
                     text = player.lastName,
-                    modifier = Modifier.padding(0.dp)
+                )
+                Text(
+                    text = player.age.toString(),
+                )
+                Text(
+                    text = player.position,
                 )
             }
-            Text(
-                text = player.age.toString(),
-                modifier = Modifier.padding(horizontal = 100.dp)
-            )
-            Text(
-                text = player.position,
-                modifier = Modifier.padding(horizontal = 0.dp)
-            )
+
         }
     }
 }
