@@ -38,10 +38,10 @@ class MainActivity : ComponentActivity() {
          )
          val rotation = people.filter {it.position.equals("SP")}
          val rssItems: List<RSSItem> = listOf(
-             RSSItem(title = "Welcome to my blog", text = "This is the first blog", type="text"),
-             RSSItem(title = "Blog item", text = "Blog 2 text", type="text"),
-            RSSItem(title = "Blogger", text = "Text of Blog 3", type="video"),
-            RSSItem(title = "Returning Blog", text = "Back from break", type="text")
+             RSSItem(title = "Welcome to my blog", text = "This is the first blog", type=RSSType.TEXT),
+             RSSItem(title = "Blog item", text = "Blog 2 text", type=RSSType.TEXT),
+            RSSItem(title = "Blogger", text = "Text of Blog 3", type=RSSType.VIDEO),
+            RSSItem(title = "Returning Blog", text = "Back from break", type=RSSType.PHOTO)
          )
         setContent {
             RSSReaderTheme {
@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
                             ListItem(it)
                         }
                         items(rssItems) {
-                            if (it.type == "text") {
+                            if (it.type == RSSType.TEXT) {
                                 ListRSSText(it)
                             }
                         }
@@ -94,6 +94,27 @@ fun ListRSSText(item: RSSItem) {
                 painter = painterResource(R.drawable.baseline_text_snippet_24),
                 contentDescription = "Text snippet photo",
                 modifier = Modifier.width(100.dp).height(100.dp)
+            )
+            Text(
+                text = item.title,
+                modifier = Modifier.padding(20.dp)
+            )
+        }
+        Text(text = item.text)
+    }
+}
+
+@Composable
+fun ListRSSVideo(item: RSSItem) {
+    Card(modifier = Modifier
+        .fillMaxSize()
+        .padding(12.dp)
+    ) {
+        Row {
+            Image(
+                painter = painterResource(R.drawable.baseline_text_snippet_24),
+                contentDescription = "Text snippet photo",
+                modifier = Modifier.width(300.dp).height(300.dp)
             )
             Text(
                 text = item.title,
