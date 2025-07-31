@@ -5,4 +5,4 @@ data class Person(
     val lastName: String,
     val age: Int,
     val position: String
-)\
+)
