@@ -37,7 +37,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import com.example.rssreader.network.RetrofitClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
      override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +61,19 @@ class MainActivity : ComponentActivity() {
              RSSItem(title = "Video-log", text = "Play video for details", type=RSSType.VIDEO) ,
              RSSItem(title = "Bryce Harper", text = "Back from break", type=RSSType.IMAGE)
          )
+
+         // Launch coroutine to call RSS feed
+         lifecycleScope.launch(Dispatchers.IO) {
+             try {
+                 val response = RetrofitClient.rssService.getFeed()
+                 val items = response.channel?.items
+                 items?.forEach {
+                     Log.d("RSS", "Title: ${it.title}, Type: ${it.type}")
+                 }
+             } catch (e: Exception) {
+                 Log.e("RSS Error", "Error fetching feed: ${e.message}")
+             }
+         }
         setContent {
             RSSReaderTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding: PaddingValues ->

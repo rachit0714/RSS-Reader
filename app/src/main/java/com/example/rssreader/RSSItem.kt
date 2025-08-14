@@ -4,20 +4,23 @@ import org.simpleframework.xml.Element
 import org.simpleframework.xml.Root
 
 @Root(name = "item", strict = false)
-data class RSSItem(
+class RSSItem(
 
-    @Element(name="title")
-    val title: String,
+    @field:Element(name = "title", required = false)
+    var title: String = "",
 
-    @Element(name="description", required = false)
-    val text: String? = null,
-
-    val type: RSSType,
-
-    val mediaUrl: String? = null,
+    @field:Element(name="description", required = false)
+    var text: String = "",
 
     @field:Element(name = "link", required = false)
-    val link: String? = null
+    var link: String? = null,
+
+    @org.simpleframework.xml.Transient
+    var type: RSSType = RSSType.TEXT,
+
+    @org.simpleframework.xml.Transient
+    var mediaUrl: String? = null
+
 )
 
 enum class RSSType {
